@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import os
 from langchain_groq import ChatGroq
 from langchain.prompts import PromptTemplate
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -37,6 +38,21 @@ class ConsultationRequest(BaseModel):
     symptoms: str
 
 app = FastAPI()
+
+origins = [
+    "https://healthvsync.netlify.app/organisationlogin/*/search-user/*/Aiconsult/*",
+    "https://healthvsync.netlify.app/userlogin/*/Aiconsult/*",
+    "http://localhost:3000/userlogin/*/Aiconsult/*",
+    "http://localhost:3000/organisationlogin/*/search-user/*/Aiconsult/*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/generate-medical-response/")
 async def generate_medical_response(consultation_request: ConsultationRequest):
