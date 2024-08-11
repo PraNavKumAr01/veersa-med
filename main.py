@@ -34,7 +34,7 @@ query_prompt = PromptTemplate(
 query_chain = query_prompt | llm
 
 class ConsultationRequest(BaseModel):
-    diagnosis: list[str]
+    diagnosis: str
     symptoms: str
 
 app = FastAPI()
