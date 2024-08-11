@@ -57,7 +57,7 @@ app.add_middleware(
 @app.post("/generate-medical-response/")
 async def generate_medical_response(consultation_request: ConsultationRequest):
     try:
-        context = "\n".join(consultation_request.diagnosis)
+        context = consultation_request.diagnosis
         question = consultation_request.symptoms
         response = query_chain.invoke({
             "context": context,
